@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome - FinTech Health Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        padding: 6rem 0 4rem;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+        color: #86868b;
+        font-weight: 400;
+        margin-bottom: 3rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .feature-card {
+        text-align: center;
+        padding: 2.5rem 2rem;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-8px);
+    }
+    
+    .feature-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+        background: linear-gradient(135deg, #0071e3 0%, #0051a2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .feature-card:nth-child(2) .feature-icon {
+        background: linear-gradient(135deg, #30d158 0%, #1fa844 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .feature-card:nth-child(3) .feature-icon {
+        background: linear-gradient(135deg, #ff3b30 0%, #d70015 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #1d1d1f;
+    }
+    
+    .feature-text {
+        color: #86868b;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h1 class="hero-title">Personal Finance Health Dashboard</h1>
+    <p class="hero-subtitle">
+        Track your income and expenses, monitor your financial health, and make better financial decisions.
+    </p>
+    <div class="d-grid gap-3 d-md-flex justify-content-md-center">
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg px-5 py-3">
+            <i class="bi bi-person-plus"></i> Get Started
+        </a>
+        <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-lg px-5 py-3">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+        </a>
+        <a href="{% url 'accounts:about' %}" class="btn btn-outline-primary btn-lg px-5 py-3">
+            <i class="bi bi-info-circle"></i> Learn More
+        </a>
+    </div>
+</div>
+
+<div class="row mt-5 g-4">
+    <div class="col-md-4">
+        <div class="card feature-card">
+            <div class="card-body">
+                <i class="bi bi-graph-up-arrow feature-icon"></i>
+                <h5 class="feature-title">Track Transactions</h5>
+                <p class="feature-text">Record your income and expenses with categories and notes.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card feature-card">
+            <div class="card-body">
+                <i class="bi bi-pie-chart feature-icon"></i>
+                <h5 class="feature-title">Visual Analytics</h5>
+                <p class="feature-text">View your financial data with interactive charts and graphs.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card feature-card">
+            <div class="card-body">
+                <i class="bi bi-heart-pulse feature-icon"></i>
+                <h5 class="feature-title">Health Score</h5>
+                <p class="feature-text">Monitor your financial health with an intelligent scoring system.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

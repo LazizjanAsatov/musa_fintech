@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FinTech Health Dashboard{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #1d1d1f !important;
+            letter-spacing: -0.02em;
+        }
+        
+        .navbar-nav .nav-link {
+            color: #1d1d1f !important;
+            font-weight: 400;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            margin: 0 0.25rem;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #0071e3 !important;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+            font-size: 1.1rem;
+            color: #1d1d1f;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .btn {
+            border-radius: 12px;
+            font-weight: 500;
+            padding: 0.625rem 1.5rem;
+            transition: all 0.2s ease;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0071e3 0%, #0051a2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0051a2 0%, #003d7a 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(142, 142, 147, 0.12);
+            color: #1d1d1f;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(142, 142, 147, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff3b30 0%, #d70015 100%);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #d70015 0%, #b00012 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
+        }
+        
+        .btn-outline-primary {
+            border: 1.5px solid #0071e3;
+            color: #0071e3;
+            background: transparent;
+        }
+        
+        .btn-outline-primary:hover {
+            background: #0071e3;
+            color: white;
+        }
+        
+        .btn-outline-danger {
+            border: 1.5px solid #ff3b30;
+            color: #ff3b30;
+            background: transparent;
+        }
+        
+        .btn-outline-danger:hover {
+            background: #ff3b30;
+            color: white;
+        }
+        
+        .health-score {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+        
+        .health-healthy {
+            color: #30d158;
+        }
+        
+        .health-caution {
+            color: #ff9f0a;
+        }
+        
+        .health-unhealthy {
+            color: #ff3b30;
+        }
+        
+        .main-content {
+            padding: 2.5rem 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 18px;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            color: #86868b;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .badge {
+            border-radius: 8px;
+            padding: 0.375rem 0.75rem;
+            font-weight: 500;
+            font-size: 0.8125rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #0071e3;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+            outline: none;
+        }
+        
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .table thead {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        .table tbody tr:hover {
+            background: rgba(0, 113, 227, 0.05);
+        }
+        
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .alert-success {
+            background: rgba(48, 209, 88, 0.1);
+            color: #1d4d2e;
+            border-left: 4px solid #30d158;
+        }
+        
+        .alert-danger {
+            background: rgba(255, 59, 48, 0.1);
+            color: #8b1e1e;
+            border-left: 4px solid #ff3b30;
+        }
+        
+        .alert-warning {
+            background: rgba(255, 159, 10, 0.1);
+            color: #8b5a00;
+            border-left: 4px solid #ff9f0a;
+        }
+        
+        .alert-info {
+            background: rgba(0, 113, 227, 0.1);
+            color: #003d7a;
+            border-left: 4px solid #0071e3;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #1d1d1f;
+        }
+        
+        .pagination .page-link {
+            border-radius: 8px;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            margin: 0 0.25rem;
+            color: #1d1d1f;
+            transition: all 0.2s ease;
+        }
+        
+        .pagination .page-link:hover {
+            background: #0071e3;
+            color: white;
+            border-color: #0071e3;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background: #0071e3;
+            border-color: #0071e3;
+        }
+        
+        .nav-tabs {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            border-radius: 12px 12px 0 0;
+            color: #86868b;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-tabs .nav-link:hover {
+            color: #1d1d1f;
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: #0071e3;
+            background: transparent;
+            border-bottom: 2px solid #0071e3;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1.5rem 0;
+            }
+            
+            .card {
+                border-radius: 16px;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'accounts:landing' %}">
+                <i class="bi bi-graph-up"></i> FinTech Health
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        {% if user.profile.is_admin %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'backoffice:dashboard' %}">
+                                    <i class="bi bi-speedometer2"></i> Admin Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'backoffice:user_list' %}">
+                                    <i class="bi bi-people"></i> Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'backoffice:settings' %}">
+                                    <i class="bi bi-gear"></i> Settings
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'backoffice:monitoring' %}">
+                                    <i class="bi bi-bar-chart"></i> Monitoring
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'backoffice:audit_log' %}">
+                                    <i class="bi bi-journal-text"></i> Audit Log
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'finance:dashboard' %}">
+                                    <i class="bi bi-speedometer2"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'finance:transaction_list' %}">
+                                    <i class="bi bi-list-ul"></i> Transactions
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'finance:transaction_create' %}">
+                                    <i class="bi bi-plus-circle"></i> Add Transaction
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'finance:category_list' %}">
+                                    <i class="bi bi-tags"></i> Categories
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <span class="nav-link" style="color: #86868b;">
+                                <i class="bi bi-person-circle"></i> {{ user.username }}
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:logout' %}">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:about' %}">
+                                <i class="bi bi-info-circle"></i> About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:login' %}">
+                                <i class="bi bi-box-arrow-in-right"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:register' %}">
+                                <i class="bi bi-person-plus"></i> Register
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+

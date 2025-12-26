@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+
+{% block title %}About - FinTech Health Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-hero {
+        text-align: center;
+        padding: 4rem 0 3rem;
+        background: linear-gradient(135deg, rgba(0, 113, 227, 0.05) 0%, rgba(48, 209, 88, 0.05) 100%);
+        border-radius: 24px;
+        margin-bottom: 3rem;
+    }
+    
+    .about-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .about-hero p {
+        font-size: 1.25rem;
+        color: #86868b;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .section {
+        margin-bottom: 4rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin-bottom: 1.5rem;
+        color: #1d1d1f;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .section-title i {
+        font-size: 2rem;
+        color: #0071e3;
+    }
+    
+    .section-content {
+        font-size: 1.125rem;
+        line-height: 1.8;
+        color: #1d1d1f;
+    }
+    
+    .section-content p {
+        margin-bottom: 1.5rem;
+    }
+    
+    .feature-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .feature-list li {
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: start;
+        gap: 1rem;
+    }
+    
+    .feature-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .feature-list li i {
+        color: #30d158;
+        font-size: 1.5rem;
+        margin-top: 0.25rem;
+    }
+    
+    .feature-list li strong {
+        color: #1d1d1f;
+        font-weight: 600;
+    }
+    
+    .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .tech-badge {
+        background: rgba(0, 113, 227, 0.1);
+        color: #0071e3;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 500;
+        font-size: 0.9375rem;
+    }
+    
+    .creator-section {
+        background: linear-gradient(135deg, rgba(0, 113, 227, 0.05) 0%, rgba(48, 209, 88, 0.05) 100%);
+        border-radius: 24px;
+        padding: 3rem;
+        text-align: center;
+        margin-top: 4rem;
+    }
+    
+    .creator-section h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin-bottom: 1rem;
+        color: #1d1d1f;
+    }
+    
+    .creator-name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #0071e3;
+        margin: 1rem 0;
+    }
+    
+    .creator-section p {
+        color: #86868b;
+        font-size: 1.125rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .info-card {
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 18px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+        .about-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+        }
+        
+        .creator-section {
+            padding: 2rem 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-hero">
+    <h1>About FinTech Health</h1>
+    <p>Your personal finance management platform powered by modern fintech technology</p>
+</div>
+
+<div class="section">
+    <h2 class="section-title">
+        <i class="bi bi-lightbulb"></i>
+        How the App Works
+    </h2>
+    <div class="section-content">
+        <div class="info-card">
+            <p>
+                <strong>FinTech Health Dashboard</strong> is a comprehensive personal finance management application 
+                designed to help you track your income, manage expenses, and monitor your financial health in real-time. 
+                The app provides a complete financial overview through intuitive dashboards, interactive charts, and 
+                intelligent health scoring.
+            </p>
+            <p>
+                The application follows a simple workflow: <strong>Track → Analyze → Improve</strong>. Users can 
+                record their financial transactions, categorize them for better organization, and view comprehensive 
+                analytics that help make informed financial decisions.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2 class="section-title">
+        <i class="bi bi-wallet2"></i>
+        How to Manage Your Finances
+    </h2>
+    <div class="section-content">
+        <div class="info-card">
+            <p><strong>Getting Started:</strong></p>
+            <ul class="feature-list">
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Create Categories:</strong> Organize your transactions by creating custom categories 
+                        for income (salary, freelance, investments) and expenses (groceries, utilities, entertainment).
+                    </div>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Record Transactions:</strong> Add income and expense transactions with details like 
+                        amount, date, category, and optional notes. The system automatically calculates your balance.
+                    </div>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Monitor Dashboard:</strong> View your current balance, financial health score, and 
+                        period-based summaries (weekly, monthly, yearly) to understand your financial trends.
+                    </div>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Analyze with Charts:</strong> Use interactive charts to visualize your income vs. 
+                        expenses over different time periods, helping you identify spending patterns and opportunities 
+                        for improvement.
+                    </div>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Track History:</strong> Filter and search through your transaction history by date, 
+                        type, category, or keywords to review past financial activities.
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2 class="section-title">
+        <i class="bi bi-graph-up-arrow"></i>
+        FinTech Technology Used
+    </h2>
+    <div class="section-content">
+        <div class="info-card">
+            <p>
+                This application leverages modern <strong>fintech (financial technology)</strong> principles and 
+                technologies to provide a robust, secure, and user-friendly financial management experience:
+            </p>
+            
+            <p><strong>1. Real-Time Financial Analytics:</strong></p>
+            <p>
+                The app uses advanced data aggregation and calculation algorithms to provide real-time financial 
+                insights. The system automatically computes your balance, net income, and financial health score 
+                based on your transaction history.
+            </p>
+            
+            <p><strong>2. Intelligent Health Scoring:</strong></p>
+            <p>
+                Our proprietary financial health score algorithm analyzes your spending patterns, income-to-expense 
+                ratios, and net cash flow over the last 30 days to generate a score from 0-100. This score helps 
+                you understand your financial wellness at a glance.
+            </p>
+            
+            <p><strong>3. Data Visualization:</strong></p>
+            <p>
+                Interactive charts powered by Chart.js provide visual representations of your financial data across 
+                weekly, monthly, and yearly periods. This fintech visualization helps identify trends and patterns 
+                that might not be obvious in raw numbers.
+            </p>
+            
+            <p><strong>4. Secure Financial Data Management:</strong></p>
+            <p>
+                Built with Django, the application follows fintech security best practices including encrypted 
+                password storage, CSRF protection, role-based access control, and secure session management. 
+                Your financial data is protected with industry-standard security measures.
+            </p>
+            
+            <p><strong>5. Automated Financial Tracking:</strong></p>
+            <p>
+                The system automatically categorizes and aggregates transactions, calculates period-based summaries, 
+                and maintains an audit log of all financial activities. This automation reduces manual work and 
+                ensures accuracy in financial reporting.
+            </p>
+            
+            <div class="tech-stack">
+                <span class="tech-badge">Django Framework</span>
+                <span class="tech-badge">SQLite Database</span>
+                <span class="tech-badge">Chart.js Visualization</span>
+                <span class="tech-badge">Real-Time Analytics</span>
+                <span class="tech-badge">Health Score Algorithm</span>
+                <span class="tech-badge">Secure Authentication</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2 class="section-title">
+        <i class="bi bi-shield-check"></i>
+        Key Features
+    </h2>
+    <div class="section-content">
+        <div class="info-card">
+            <ul class="feature-list">
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Financial Health Score:</strong> Get an intelligent 0-100 score based on your 
+                        spending patterns and financial stability.
+                    </div>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Interactive Charts:</strong> Visualize your financial data with beautiful, 
+                        interactive charts for weekly, monthly, and yearly periods.
+                    </div>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Transaction Management:</strong> Easily add, filter, and search through your 
+                        financial transactions with advanced filtering options.
+                    </div>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Category Organization:</strong> Create and manage custom categories to organize 
+                        your income and expenses effectively.
+                    </div>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Period-Based Analytics:</strong> View summaries for weekly, monthly, and yearly 
+                        periods to track your financial progress over time.
+                    </div>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>
+                        <strong>Admin Dashboard:</strong> Comprehensive back-office management for administrators 
+                        to monitor system activity and manage users.
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="creator-section">
+    <h3>Created By</h3>
+    <div class="creator-name">Musa Quliyev</div>
+    <p>
+        This application was developed as a comprehensive fintech solution for personal finance management. 
+        Built with modern web technologies and fintech principles, it demonstrates the power of technology 
+        in making financial management accessible, intuitive, and effective.
+    </p>
+    <p style="margin-top: 1rem; font-size: 1rem;">
+        <i class="bi bi-code-slash"></i> Built with Django, Python, and modern web technologies
+    </p>
+</div>
+{% endblock %}
+

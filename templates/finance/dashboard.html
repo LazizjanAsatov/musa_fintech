@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - FinTech Health Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-header {
+        margin-bottom: 2.5rem;
+    }
+    
+    .dashboard-header h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: #1d1d1f;
+    }
+    
+    .stat-card {
+        text-align: center;
+        padding: 2.5rem 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #0071e3, #30d158);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .stat-card:hover::before {
+        opacity: 1;
+    }
+    
+    .stat-value {
+        font-size: 3rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0.75rem 0;
+    }
+    
+    .stat-label {
+        color: #86868b;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .period-card {
+        transition: all 0.3s ease;
+    }
+    
+    .period-card:hover {
+        transform: translateY(-4px);
+    }
+    
+    .period-card .card-header {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1d1d1f;
+        background: rgba(0, 0, 0, 0.02);
+    }
+    
+    .period-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0.5rem 0;
+    }
+    
+    .chart-container {
+        padding: 1.5rem;
+        min-height: 400px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h2><i class="bi bi-speedometer2"></i> Dashboard</h2>
+</div>
+
+<!-- Balance and Health Score -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body stat-card">
+                <div class="stat-label">Current Balance</div>
+                <div class="stat-value {% if balance >= 0 %}text-success{% else %}text-danger{% endif %}">
+                    ${{ balance|floatformat:2 }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body stat-card">
+                <div class="stat-label">Financial Health Score</div>
+                <div class="stat-value health-{{ health_class }}">
+                    {{ health_score }}/100
+                </div>
+                <div class="mt-2">
+                    <span class="badge bg-{{ health_class }}">{{ health_status }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Period Totals -->
+<div class="row mb-4 g-4">
+    <div class="col-md-4">
+        <div class="card period-card">
+            <div class="card-header">Weekly (Last 7 Days)</div>
+            <div class="card-body">
+                <p class="mb-2"><span style="color: #86868b;">Income:</span> <span class="period-value text-success">${{ weekly_income|floatformat:2 }}</span></p>
+                <p class="mb-2"><span style="color: #86868b;">Expense:</span> <span class="period-value text-danger">${{ weekly_expense|floatformat:2 }}</span></p>
+                <p class="mb-0"><span style="color: #86868b;">Net:</span> 
+                    <span class="period-value {% if weekly_net >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        ${{ weekly_net|floatformat:2 }}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card period-card">
+            <div class="card-header">Monthly (Last 30 Days)</div>
+            <div class="card-body">
+                <p class="mb-2"><span style="color: #86868b;">Income:</span> <span class="period-value text-success">${{ monthly_income|floatformat:2 }}</span></p>
+                <p class="mb-2"><span style="color: #86868b;">Expense:</span> <span class="period-value text-danger">${{ monthly_expense|floatformat:2 }}</span></p>
+                <p class="mb-0"><span style="color: #86868b;">Net:</span> 
+                    <span class="period-value {% if monthly_net >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        ${{ monthly_net|floatformat:2 }}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card period-card">
+            <div class="card-header">Yearly (Last 365 Days)</div>
+            <div class="card-body">
+                <p class="mb-2"><span style="color: #86868b;">Income:</span> <span class="period-value text-success">${{ yearly_income|floatformat:2 }}</span></p>
+                <p class="mb-2"><span style="color: #86868b;">Expense:</span> <span class="period-value text-danger">${{ yearly_expense|floatformat:2 }}</span></p>
+                <p class="mb-0"><span style="color: #86868b;">Net:</span> 
+                    <span class="period-value {% if yearly_net >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        ${{ yearly_net|floatformat:2 }}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="card mb-4">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" id="chartTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="weekly-tab" data-bs-toggle="tab" data-bs-target="#weekly" type="button">
+                    Weekly
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#monthly" type="button">
+                    Monthly
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="yearly-tab" data-bs-toggle="tab" data-bs-target="#yearly" type="button">
+                    Yearly
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body chart-container">
+        <div class="tab-content" id="chartTabsContent">
+            <div class="tab-pane fade show active" id="weekly" role="tabpanel">
+                <canvas id="weeklyChart"></canvas>
+            </div>
+            <div class="tab-pane fade" id="monthly" role="tabpanel">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+            <div class="tab-pane fade" id="yearly" role="tabpanel">
+                <canvas id="yearlyChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    // Parse chart data
+    const weeklyData = {{ chart_data_weekly|safe }};
+    const monthlyData = {{ chart_data_monthly|safe }};
+    const yearlyData = {{ chart_data_yearly|safe }};
+
+    // Weekly Chart
+    const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+    new Chart(weeklyCtx, {
+        type: 'line',
+        data: {
+            labels: weeklyData.labels,
+            datasets: [{
+                label: 'Income',
+                data: weeklyData.income,
+                borderColor: '#30d158',
+                backgroundColor: 'rgba(48, 209, 88, 0.1)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }, {
+                label: 'Expense',
+                data: weeklyData.expense,
+                borderColor: '#ff3b30',
+                backgroundColor: 'rgba(255, 59, 48, 0.1)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }, {
+                label: 'Net',
+                data: weeklyData.net,
+                borderColor: '#0071e3',
+                backgroundColor: 'rgba(0, 113, 227, 0.1)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            size: 13,
+                            weight: 500
+                        },
+                        padding: 15
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    },
+                    ticks: {
+                        font: {
+                            family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            size: 12
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            size: 12
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Monthly Chart
+    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: monthlyData.labels,
+            datasets: [{
+                label: 'Income',
+                data: monthlyData.income,
+                backgroundColor: '#30d158',
+                borderRadius: 8,
+                borderSkipped: false
+            }, {
+                label: 'Expense',
+                data: monthlyData.expense,
+                backgroundColor: '#ff3b30',
+                borderRadius: 8,
+                borderSkipped: false
+            }, {
+                label: 'Net',
+                data: monthlyData.net,
+                backgroundColor: '#0071e3',
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            size: 13,
+                            weight: 500
+                        },
+                        padding: 15
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    },
+                    ticks: {
+                        font: {
+                            family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            size: 12
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            size: 12
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Yearly Chart
+    const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
+    new Chart(yearlyCtx, {
+        type: 'bar',
+        data: {
+            labels: yearlyData.labels,
+            datasets: [{
+                label: 'Income',
+                data: yearlyData.income,
+                backgroundColor: '#30d158',
+                borderRadius: 8,
+                borderSkipped: false
+            }, {
+                label: 'Expense',
+                data: yearlyData.expense,
+                backgroundColor: '#ff3b30',
+                borderRadius: 8,
+                borderSkipped: false
+            }, {
+                label: 'Net',
+                data: yearlyData.net,
+                backgroundColor: '#0071e3',
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            size: 13,
+                            weight: 500
+                        },
+                        padding: 15
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    },
+                    ticks: {
+                        font: {
+                            family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            size: 12
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            size: 12
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+

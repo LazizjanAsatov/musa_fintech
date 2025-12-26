@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}User Details - FinTech Health Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-person"></i> User Details</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">User Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Username:</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Full Name:</th>
+                        <td>{{ user.get_full_name|default:"-" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Role:</th>
+                        <td>
+                            <span class="badge {% if profile.role == 'ADMIN' %}bg-warning{% else %}bg-info{% endif %}">
+                                {{ profile.get_role_display }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Status:</th>
+                        <td>
+                            <span class="badge {% if profile.is_active %}bg-success{% else %}bg-danger{% endif %}">
+                                {% if profile.is_active %}Active{% else %}Inactive{% endif %}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Joined:</th>
+                        <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Transaction Statistics</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Total Income:</th>
+                        <td class="text-success">${{ total_income|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Expense:</th>
+                        <td class="text-danger">${{ total_expense|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Net Balance:</th>
+                        <td class="{% if net_balance >= 0 %}text-success{% else %}text-danger{% endif %}">
+                            ${{ net_balance|floatformat:2|default:"0.00" }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Transaction Count:</th>
+                        <td>{{ transaction_count }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Actions</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" class="mb-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="toggle_active">
+                    <button type="submit" class="btn btn-{% if profile.is_active %}danger{% else %}success{% endif %} w-100">
+                        <i class="bi bi-{% if profile.is_active %}x-circle{% else %}check-circle{% endif %}"></i>
+                        {% if profile.is_active %}Deactivate{% else %}Activate{% endif %} User
+                    </button>
+                </form>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="change_role">
+                    <div class="mb-3">
+                        <label class="form-label">Change Role</label>
+                        <select name="role" class="form-select">
+                            <option value="USER" {% if profile.role == 'USER' %}selected{% endif %}>User</option>
+                            <option value="ADMIN" {% if profile.role == 'ADMIN' %}selected{% endif %}>Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">
+                        <i class="bi bi-arrow-repeat"></i> Update Role
+                    </button>
+                </form>
+                
+                <hr>
+                <a href="{% url 'backoffice:user_list' %}" class="btn btn-secondary w-100">
+                    <i class="bi bi-arrow-left"></i> Back to Users
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
