@@ -157,3 +157,4 @@ class Command(BaseCommand):
         self.stdout.write('  Admin: admin@example.com / AdminPass123!')
         self.stdout.write('  User:  user@example.com / UserPass123!')
 
+

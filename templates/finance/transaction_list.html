@@ -67,6 +67,7 @@
                             <th>Category</th>
                             <th>Amount</th>
                             <th>Note</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,6 +84,14 @@
                                     ${{ transaction.amount|floatformat:2 }}
                                 </td>
                                 <td>{{ transaction.note|default:"-"|truncatewords:10 }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'finance:transaction_delete' transaction.pk %}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this transaction?');">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete transaction">
+                                            ×
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -123,4 +132,5 @@
     </div>
 </div>
 {% endblock %}
+
 

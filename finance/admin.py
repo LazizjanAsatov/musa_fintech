@@ -16,3 +16,4 @@ class TransactionAdmin(admin.ModelAdmin):
     search_fields = ['note', 'owner__username']
     date_hierarchy = 'date'
 
+

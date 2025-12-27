@@ -8,3 +8,4 @@ class ProfileAdmin(admin.ModelAdmin):
     list_filter = ['role', 'is_active']
     search_fields = ['user__username', 'user__email']
 
+

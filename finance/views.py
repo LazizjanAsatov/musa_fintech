@@ -224,3 +224,18 @@ def category_delete_view(request, pk):
         'category': category
     })
 
+
+@login_required
+def transaction_delete_view(request, pk):
+    """Delete a transaction."""
+    transaction = get_object_or_404(Transaction, pk=pk, owner=request.user)
+    
+    if request.method == 'POST':
+        transaction.delete()
+        messages.success(request, 'Transaction deleted successfully!')
+        return redirect('finance:transaction_list')
+    
+    # For GET requests, redirect back to list (or you could create a confirmation page)
+    messages.info(request, 'Transaction deletion requires POST request.')
+    return redirect('finance:transaction_list')
+

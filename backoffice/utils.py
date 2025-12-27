@@ -13,3 +13,4 @@ def log_admin_action(actor, action, target, metadata=None):
         log.save()
     return log
 
+

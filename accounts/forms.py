@@ -44,3 +44,4 @@ class UserRegistrationForm(UserCreationForm):
             raise forms.ValidationError('A user with this email already exists.')
         return email
 
+

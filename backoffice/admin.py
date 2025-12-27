@@ -10,3 +10,4 @@ class AuditLogAdmin(admin.ModelAdmin):
     readonly_fields = ['actor', 'action', 'target', 'metadata', 'created_at']
     date_hierarchy = 'created_at'
 
+
