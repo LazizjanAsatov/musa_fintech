@@ -11,3 +11,5 @@ class AuditLogAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
 
+
+

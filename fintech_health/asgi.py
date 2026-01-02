@@ -16,3 +16,5 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fintech_health.settings')
 application = get_asgi_application()
 
 
+
+

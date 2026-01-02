@@ -46,3 +46,5 @@ class Transaction(models.Model):
         return f"{self.type} - {self.amount} - {self.date}"
 
 
+
+

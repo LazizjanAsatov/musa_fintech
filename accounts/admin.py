@@ -9,3 +9,5 @@ class ProfileAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'user__email']
 
 
+
+

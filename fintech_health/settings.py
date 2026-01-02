@@ -127,3 +127,5 @@ LOGIN_REDIRECT_URL = 'finance:dashboard'
 LOGOUT_REDIRECT_URL = 'accounts:landing'
 
 
+
+

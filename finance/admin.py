@@ -17,3 +17,5 @@ class TransactionAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
 
 
+
+

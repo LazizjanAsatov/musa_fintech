@@ -251,3 +251,5 @@ If static files don't load, ensure `STATICFILES_DIRS` in settings.py points to y
 This project is for educational/demonstration purposes.
 
 
+
+
